@@ -3,9 +3,9 @@ import { UserContext } from "./UserContext";
 import RegisterAndLoginForm from "./RegisterAndLoginForm";
 
 export default function Routes() {
-    const {username, id} = useContext(UserContext);
+    const { isAuthenticated } = useContext(UserContext);
 
-    if(username) {
+    if(isAuthenticated) {
         return(
             <div className="flex justify-center">Successful login.</div>
         )

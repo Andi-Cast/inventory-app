@@ -24,7 +24,10 @@ export default function LoginForm({onLogin}) {
                 <div className="flex justify-start text-lg text-gray-800">Stay updated on your inventory</div>
             </div>
             <form 
-                onSubmit={onLogin}
+                onSubmit={(ev) => {
+                    ev.preventDefault();
+                    onLogin(loginInfo, ev);
+                }}
                 className="flex flex-col w-full mt-4">
                 <input 
                     type="email" 
