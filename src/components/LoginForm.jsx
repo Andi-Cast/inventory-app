@@ -36,6 +36,7 @@ export default function LoginForm({onLogin}) {
                     onChange={onChange}
                     placeholder="Email address"
                     className="p-3 rounded-lg"
+                    required
                 />
                 <div className="relative mt-4">
                     <input 
@@ -45,6 +46,7 @@ export default function LoginForm({onLogin}) {
                         onChange={onChange}
                         placeholder="Password"
                         className="w-full p-3 border rounded-lg"
+                        required
                     />
                     <button 
                         type="button"

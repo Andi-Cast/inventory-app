@@ -27,7 +27,10 @@ export default function RegisterForm({onRegister}) {
                 <div className="flex justify-start text-lg text-gray-800">Take control of your inventory</div>
             </div>
             <form 
-                onSubmit={onRegister}
+                onSubmit={(ev) => {
+                    ev.preventDefault();
+                    onRegister(registerInfo, ev);
+                }}
                 className="flex flex-col w-full mt-4">
                 <input 
                     type="text"
@@ -75,7 +78,7 @@ export default function RegisterForm({onRegister}) {
                     </button>
                 </div>
                 <button type="submit" className="bg-blue-500 text-white block w-full rounded-sm p-2 hover:bg-blue-700 mt-4">
-                    Login
+                    Register
                 </button>
             </form>
         </>

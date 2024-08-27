@@ -3,37 +3,37 @@ import { useState } from "react"
 import { UserContext } from "./UserContext";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
-import { login } from "../api/ApiServices";
+import { login, register } from "../api/ApiServices";
 
 
 
 export default function RegisterAndLoginForm() {
     const [status, setStatus] = useState("login");
-    const { login: contextLogin, logout } = useContext(UserContext)
+    const { login: contextLogin, logout: contextLogout } = useContext(UserContext)
 
     async function handleRegister(registerInfo, ev) {
         ev.preventDefault(); 
-        console.log("registering user")
-        console.log(`username: ${registerInfo.username}`)
-        console.log(`password: ${registerInfo.password}`)
+        try {
+            const response = await register(registerInfo);
+            contextLogin(response.data);
+        } catch (error) {
+            console.log("Failed to register: ", error);
+        }
     }
 
     async function handleLogin(loginInfo, ev) {
         ev.preventDefault(); 
-        console.log("logining in user.")
-        console.log(`username: ${loginInfo.username}`)
-        console.log(`password: ${loginInfo.password}`)
         try {
-            const response = await login(loginInfo, ev)
-            contextLogin(response.data.token);
-            console.log("Logged in successfully")
+            const response = await login(loginInfo)
+            console.log(response.data);
+            contextLogin(response.data);
         } catch (error) {
-            console.log("Failed to login", error);
+            console.log("Failed to login: ", error);
         }
     }
 
     return(
-       <div className="flex flex-col w-1/3 h-1/2 mt-6 px-8 py-5 shadow-lg bg-slate-100">
+       <div className="flex flex-col w-1/3 h-1/2 mt-6 px-8 py-5 shadow-lg bg-slate-100 rounded-lg">
             {status === "login" && (
                 <LoginForm onLogin={(loginInfo, ev) => handleLogin(loginInfo, ev)}/>
             )}
