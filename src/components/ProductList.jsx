@@ -5,11 +5,11 @@ import { useState } from "react";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import AddProductForm from "./AddProductForm";
 
-export default function ProductList({ products }) {
+export default function ProductList({ products, onAddProduct, onDeleteProduct }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    function handleSearchTerm(ev) {
+    const handleSearchTerm = (ev) => {
         setSearchTerm(ev.target.value);
     }
 
@@ -25,10 +25,6 @@ export default function ProductList({ products }) {
         setIsModalOpen(false);
     }
 
-    const handleAddProduct = (newProduct) => {
-        console.log(newProduct)
-    }
-
     return (
         <section className="flex flex-col w-full justify-center p-4 bg-white">
             <header className="flex justify-start text-3xl text-gray-800 w-full">Inventory List</header>
@@ -41,7 +37,7 @@ export default function ProductList({ products }) {
                         onChange={handleSearchTerm}
                         className="rounded-lg px-4 py-2 border border-gray-500 cursor-pointer"
                     />
-                    <div className="flex items-center justify-center border shadow-sm px-4 py-2 rounded-lg hover:shadow-x cursor-pointer">
+                    <div className="flex items-center justify-center border border-gray-500 px-4 py-2 rounded-lg hover:shadow-xl cursor-pointer">
                         <FontAwesomeIcon icon={faFilter} />
                         <span className="ml-2">Filter</span>
                     </div>
@@ -53,20 +49,21 @@ export default function ProductList({ products }) {
             </div>
             {filteredProducts.length > 0 ? (
                 <>
-                    <div className="grid grid-cols-4 bg-slate-300 mt-3">
-                        <div className="flex justify-center border border-gray-500 px-3 py-2">Name</div>
-                        <div className="flex justify-center border border-gray-500 px-3 py-2">Product Number</div>
-                        <div className="flex justify-center border border-gray-500 px-3 py-2">Category</div> 
-                        <div className="flex justify-center border border-gray-500 px-3 py-2">Exp. Date</div>
+                    <div className="grid grid-cols-5 bg-slate-300 mt-3">
+                        <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Name</div>
+                        <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Item Number</div>
+                        <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Category</div> 
+                        <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Exp. Date</div>
+                        <div className="flex justify-center border border-gray-500 px-3 py-2">Actions</div>
                     </div>
-                    {products.map(product => (
-                        <Product key={product.id} product={product}/>
+                    {filteredProducts.map(product => (
+                        <Product key={product.id} product={product} onDeleteProduct={onDeleteProduct}/>
                     ))}
                 </>
             ) : (
                 <div className="flex justify-center text-3xl text-gray-800 mt-3">No products found.</div>
             )}
-            <AddProductForm isOpen={isModalOpen} onClose={handleCloseModal} onAddProduct={handleAddProduct}/>
+            <AddProductForm isOpen={isModalOpen} onClose={handleCloseModal} onAddProduct={onAddProduct}/>
         </section>
     );
 }

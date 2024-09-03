@@ -1,15 +1,35 @@
 import { useEffect } from "react";
 import { useState } from "react"
-import { getProducts } from "../api/ApiServices";
+import { addProductAPI, deleteProductAPI, getProductsAPI } from "../api/ApiServices";
 import ProductList from "./ProductList";
 
 export default function DashBoard() {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
+    const handleAddProduct = async (newProductData) => {
+        const newProductResponse = await addProductAPI(newProductData);
+        setProducts(prev => [...prev, newProductResponse]);
+    }
+
+    const handleDeleteProduct = async (productId) => {
+        await deleteProductAPI(productId);
+        setProducts(products =>
+            products.filter(product => product.id !== productId)
+        );
+    }
+
+    const fetchProducts = async () => {
+        try {
+            const fetchedProducts = await getProductsAPI();
+            setProducts(fetchedProducts);
+        } catch (error) {
+            setError(error);
+        }
+    }
+
     useEffect(() => {
-        getProducts().then(setProducts).catch(setError);
-        console.log(products);
+        fetchProducts();
     }, [])
 
     if(error) {
@@ -18,7 +38,7 @@ export default function DashBoard() {
 
     return (
         <div className="flex flex-col w-2/3">
-            <ProductList products={products}/>
+            <ProductList products={products} onAddProduct={handleAddProduct} onDeleteProduct={handleDeleteProduct}/>
         </div>
     )
 }

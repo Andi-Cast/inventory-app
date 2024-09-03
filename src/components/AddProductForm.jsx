@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 
-export default function AddProductForm({ isOpen, onClose, onAddProduct}) {
+export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
+    const { userDetails } = useContext(UserContext);
     const [newProduct, setNewProduct] = useState({
-        createdBy: "",
+        createdBy: userDetails.id,
         productNumber: "",
         name: "",
         category: "",
@@ -13,10 +15,25 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct}) {
         setNewProduct({...newProduct, [ev.target.name] : ev.target.value})
     }
 
-    const handleSubmit = (ev) => {
+    const handleSubmit = async (ev) => {
         ev.preventDefault();
-        onAddProduct(newProduct);
-        onClose();
+        const formattedProduct = {
+            ...newProduct,
+            expirationDate : new Date(newProduct.expirationDate).toISOString()
+        }
+        try {
+            onAddProduct(formattedProduct);
+            setNewProduct({
+                createdBy: "",
+                productNumber: "",
+                name: "",
+                category: "",
+                expirationDate: ""
+            })
+            onClose();   
+        } catch (error) {
+            console.log("Error adding product: ", error);
+        }
     }
 
     if(!isOpen) return null;
@@ -24,16 +41,25 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct}) {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
             <div className="bg-white p-5 rounded-lg shadow-lg w-1/3">
-                <header className="flex justify-start text-2xl text-gray-800 w-full mb-2">Add Product</header>
+                <header className="flex justify-start text-2xl text-gray-800 w-full mb-4">Add Product</header>
                 <form onSubmit={handleSubmit} className="flex flex-col">
-                    <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" className="p-2 mb-2 rounded-lg border border-gray-300 cursor-pointer" required/>
-                    <input type="text" name="productNumber" value={newProduct.productNumber} onChange={handleChange} placeholder="Product Number" className="p-2 mb-2 rounded-lg border border-gray-300 cursor-pointer" required/>
-                    <input type="text" name="category" value={newProduct.category} onChange={handleChange} placeholder="Category" className="p-2 mb-2 rounded-lg border border-gray-300 cursor-pointer" required/>
-                    <input type="date" name="expirationDate" value={newProduct.expirationDate} onChange={handleChange} className="p-2 mb-2 rounded-lg border border-gray-300 cursor-pointer" required/>
+                    <label className="font-medium text-gray-700 mb-1">Product Name</label>
+                    <input type="text" name="name" value={newProduct.name} onChange={handleChange} placeholder="Product Name" className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
+    
+                    <label className="font-medium text-gray-700 mb-1">Product Number</label>
+                    <input type="text" name="productNumber" value={newProduct.productNumber} onChange={handleChange} placeholder="Product Number" className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
+    
+                    <label className="font-medium text-gray-700 mb-1">Category</label>
+                    <input type="text" name="category" value={newProduct.category} onChange={handleChange} placeholder="Category" className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
+    
+                    <label className="font-medium text-gray-700 mb-1">Expiration Date</label>
+                    <input type="date" name="expirationDate" value={newProduct.expirationDate} onChange={handleChange} className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
+    
                     <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-700">Add Product</button>
-                    <button type="button" onClick={onClose} className="bg-red-500 text-white p-2 rounded-lg mt-2 hover:bg-red-700">Cancel</button>
+                    <button type="button" onClick={onClose} className="bg-red-500 text-white p-2 rounded-lg mt-4 hover:bg-red-700">Cancel</button>
                 </form>
             </div>
         </div>
     );
+    
 }
