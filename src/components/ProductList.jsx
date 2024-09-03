@@ -7,7 +7,7 @@ import AddProductForm from "./AddProductForm";
 
 export default function ProductList({ products, onAddProduct, onDeleteProduct }) {
     const [searchTerm, setSearchTerm] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isAddProductFormOpen, setIsAddProductFormOpen] = useState(false);
 
     const handleSearchTerm = (ev) => {
         setSearchTerm(ev.target.value);
@@ -17,12 +17,12 @@ export default function ProductList({ products, onAddProduct, onDeleteProduct })
         return product.name.toLowerCase().startsWith(searchTerm.toLowerCase());
     })
 
-    const handleAddNewProductClick = () => {
-        setIsModalOpen(true);
+    const handleAddNewProductForm = () => {
+        setIsAddProductFormOpen(true);
     }
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
+    const handleCloseAddNewProductForm = () => {
+        setIsAddProductFormOpen(false);
     }
 
     return (
@@ -42,7 +42,7 @@ export default function ProductList({ products, onAddProduct, onDeleteProduct })
                         <span className="ml-2">Filter</span>
                     </div>
                 </div>
-                <button onClick={handleAddNewProductClick} className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                <button onClick={handleAddNewProductForm} className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
                     <FontAwesomeIcon icon={faPlus} />
                     <span className="ml-2">Add Product</span>
                 </button>
@@ -63,7 +63,7 @@ export default function ProductList({ products, onAddProduct, onDeleteProduct })
             ) : (
                 <div className="flex justify-center text-3xl text-gray-800 mt-3">No products found.</div>
             )}
-            <AddProductForm isOpen={isModalOpen} onClose={handleCloseModal} onAddProduct={onAddProduct}/>
+            <AddProductForm isOpen={isAddProductFormOpen} onClose={handleCloseAddNewProductForm} onAddProduct={onAddProduct}/>
         </section>
     );
 }
