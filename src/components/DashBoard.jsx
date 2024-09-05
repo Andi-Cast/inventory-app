@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react"
-import { addProductAPI, deleteProductAPI, getProductsAPI } from "../api/ApiServices";
+import { addProductAPI, deleteProductAPI, getProductsAPI, updateProductAPI } from "../api/ApiServices";
 import ProductList from "./ProductList";
 
 export default function DashBoard() {
@@ -17,6 +17,13 @@ export default function DashBoard() {
         setProducts(products =>
             products.filter(product => product.id !== productId)
         );
+    }
+
+    const handleUpdateProduct = async (updatedProduct) => {
+        const updatedProductFromAPI =  await updateProductAPI(updatedProduct);
+        setProducts((prevProducts) => prevProducts.map(product => 
+            product.id === updatedProductFromAPI.id ? updatedProductFromAPI : product
+        ));
     }
 
     const fetchProducts = async () => {
@@ -38,7 +45,7 @@ export default function DashBoard() {
 
     return (
         <div className="flex flex-col w-2/3">
-            <ProductList products={products} onAddProduct={handleAddProduct} onDeleteProduct={handleDeleteProduct}/>
+            <ProductList products={products} onAddProduct={handleAddProduct} onDeleteProduct={handleDeleteProduct} onUpdateProduct={handleUpdateProduct}/>
         </div>
     )
 }

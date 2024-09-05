@@ -2,14 +2,16 @@ import { format, parseISO } from "date-fns"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import EditProductForm from "./EditProductForm";
 
 const formatDate = (dateString) => {
     const date = parseISO(dateString);
     return format(date, "MM/dd/yy");
 }
 
-export default function Product({ product, onDeleteProduct }) {
+export default function Product({ product, onDeleteProduct, onUpdateProduct }) {
     const [showActions, setShowActions] = useState(false);
+    const [isEditProductFormOpen, setIsEditProductFormOpen] = useState(false);
 
     const toggleActions = () => {
         setShowActions(!showActions);
@@ -23,6 +25,14 @@ export default function Product({ product, onDeleteProduct }) {
         }
     }
 
+    const handleOpenEditProductForm = () => {
+        setIsEditProductFormOpen(true);
+    }
+
+    const handleCloseEditProductForm = () => {
+        setIsEditProductFormOpen(false);
+    }
+
     return (
         <div className="grid grid-cols-5 bg-white">
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.name}</div>
@@ -34,12 +44,13 @@ export default function Product({ product, onDeleteProduct }) {
                 {showActions && (
                     <nav  onMouseLeave={() => setShowActions(false)} className="absolute left-0 top-full w-full bg-white shadow-lg border z-10">
                         <ul className="text-gray-700">
-                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Edit <FontAwesomeIcon icon={faEdit} /></li>
+                            <li onClick={handleOpenEditProductForm} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Edit <FontAwesomeIcon icon={faEdit} /></li>
                             <li onClick={() => handleDeleteProduct(product.id)} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Delete <FontAwesomeIcon icon={faTrashAlt} /></li>
                         </ul>
                     </nav>
                 )}
             </div>
+            <EditProductForm isOpen={isEditProductFormOpen} onClose={handleCloseEditProductForm} product={product} onUpdateProduct={onUpdateProduct}/>
         </div>
     );
 }

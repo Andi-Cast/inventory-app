@@ -64,3 +64,22 @@ export async function deleteProductAPI(productId) {
         throw error;
     }
 }
+
+export async function updateProductAPI(updatedProduct) {
+    const token = sessionStorage.getItem("jwt");
+    if(!token) {
+        throw new Error("No token found");
+    }
+    try {
+        const response = await axios.post(`${API_URL}/api/products/update/id=${updatedProduct.id}`, updatedProduct, {
+            headers : {
+                "Authorization" : `Bearer ${token}`,
+                "Content-Type" : "application/json"
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error("Failed to update product: ", error);
+        throw error;
+    }
+}

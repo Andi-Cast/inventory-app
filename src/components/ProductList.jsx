@@ -5,7 +5,7 @@ import { useState } from "react";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import AddProductForm from "./AddProductForm";
 
-export default function ProductList({ products, onAddProduct, onDeleteProduct }) {
+export default function ProductList({ products, onAddProduct, onDeleteProduct, onUpdateProduct }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [isAddProductFormOpen, setIsAddProductFormOpen] = useState(false);
 
@@ -57,7 +57,7 @@ export default function ProductList({ products, onAddProduct, onDeleteProduct })
                         <div className="flex justify-center border border-gray-500 px-3 py-2">Actions</div>
                     </div>
                     {filteredProducts.map(product => (
-                        <Product key={product.id} product={product} onDeleteProduct={onDeleteProduct}/>
+                        <Product key={product.id} product={product} onDeleteProduct={onDeleteProduct} onUpdateProduct={onUpdateProduct}/>
                     ))}
                 </>
             ) : (
