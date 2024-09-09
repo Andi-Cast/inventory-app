@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react"
-import { addProductAPI, deleteProductAPI, getProductsAPI, updateProductAPI } from "../api/ApiServices";
+import { addProductAPI, applyCategoryFilterAPI, deleteProductAPI, getProductsAPI, updateProductAPI } from "../api/ApiServices";
 import ProductList from "./ProductList";
 
 export default function DashBoard() {
@@ -26,6 +26,32 @@ export default function DashBoard() {
         ));
     }
 
+    const handleFilteredProducts = async (categoryFilter) => {
+        const filtedProducts = await applyCategoryFilterAPI(categoryFilter);
+        setProducts(filtedProducts);
+    }
+
+    const handleSortExpSoon = () => {
+        const sortedProducts = [...products].sort((a, b) => new Date(a.expirationDate) - new Date(b.expirationDate));
+        setProducts(sortedProducts);
+    }
+
+    const handleSortExpLate = () => {
+        const sortedProducts = [...products].sort((a, b) => new Date(b.expirationDate) - new Date(a.expirationDate));
+        setProducts(sortedProducts);
+    }
+
+    const handleSortUpdatedRecent = () => {
+        const sortedProducts = [...products].sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
+        setProducts(sortedProducts);
+    }
+
+    const handleSortUpdatedLatest = () => {
+        const sortedProducts = [...products].sort((a, b) => new Date(a.lastUpdated) - new Date(b.lastUpdated));
+        console.log(sortedProducts);
+        setProducts(sortedProducts);
+    }
+
     const fetchProducts = async () => {
         try {
             const fetchedProducts = await getProductsAPI();
@@ -45,7 +71,18 @@ export default function DashBoard() {
 
     return (
         <div className="flex flex-col w-2/3">
-            <ProductList products={products} onAddProduct={handleAddProduct} onDeleteProduct={handleDeleteProduct} onUpdateProduct={handleUpdateProduct}/>
+            <ProductList 
+                products={products} 
+                fetchProducts={fetchProducts}
+                onAddProduct={handleAddProduct} 
+                onDeleteProduct={handleDeleteProduct} 
+                onUpdateProduct={handleUpdateProduct}
+                onFilterProduct={handleFilteredProducts}
+                onSortExpSoon={handleSortExpSoon}
+                onSortExpLate={handleSortExpLate}
+                onSortUpdatedRecent={handleSortUpdatedRecent}
+                onSortUpdatedLatest={handleSortUpdatedLatest}
+            />
         </div>
     )
 }

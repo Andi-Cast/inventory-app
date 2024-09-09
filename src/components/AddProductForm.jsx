@@ -24,7 +24,7 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
         try {
             onAddProduct(formattedProduct);
             setNewProduct({
-                createdBy: "",
+                createdBy: userDetails.id,
                 productNumber: "",
                 name: "",
                 category: "",
@@ -60,6 +60,7 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
                                 checked={newProduct.category === 'Produce'}
                                 onChange={handleChange}
                                 className="form-radio"
+                                required
                             />
                             <span className="ml-2">Produce</span>
                         </label>
@@ -71,6 +72,7 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
                                 checked={newProduct.category === 'D19'}
                                 onChange={handleChange}
                                 className="form-radio"
+                                required
                             />
                             <span className="ml-2">D19</span>
                         </label>
@@ -82,6 +84,7 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
                                 checked={newProduct.category === 'Cooler'}
                                 onChange={handleChange}
                                 className="form-radio"
+                                required
                             />
                             <span className="ml-2">Cooler</span>
                         </label>
@@ -93,6 +96,7 @@ export default function AddProductForm({ isOpen, onClose, onAddProduct }) {
                                 checked={newProduct.category === 'Freezer'}
                                 onChange={handleChange}
                                 className="form-radio"
+                                required
                             />
                             <span className="ml-2">Freezer</span>
                         </label>

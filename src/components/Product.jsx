@@ -34,15 +34,16 @@ export default function Product({ product, onDeleteProduct, onUpdateProduct }) {
     }
 
     return (
-        <div className="grid grid-cols-5 bg-white">
+        <div className="grid grid-cols-6 bg-white">
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.name}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.productNumber}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.category}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{formatDate(product.expirationDate)}</div>
+            <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{formatDate(product.lastUpdated)}</div>
             <div className="group relative flex justify-center items-center border-b border-l border-r border-gray-500 px-3 py-2">
                 <FontAwesomeIcon  onClick={toggleActions} className="text-slate-500 hover:text-slate-700 text-2xl cursor-pointer" icon={faEllipsis}/>
                 {showActions && (
-                    <nav  onMouseLeave={() => setShowActions(false)} className="absolute left-0 top-full w-full bg-white shadow-lg border z-10">
+                    <nav  onMouseEnter={() => setShowActions(true)} onMouseLeave={() => setShowActions(false)} className="absolute left-0 top-full w-full bg-white shadow-lg border z-10">
                         <ul className="text-gray-700">
                             <li onClick={handleOpenEditProductForm} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Edit <FontAwesomeIcon icon={faEdit} /></li>
                             <li onClick={() => handleDeleteProduct(product.id)} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Delete <FontAwesomeIcon icon={faTrashAlt} /></li>

@@ -83,3 +83,21 @@ export async function updateProductAPI(updatedProduct) {
         throw error;
     }
 }
+
+export async function applyCategoryFilterAPI(category) {
+    const token = sessionStorage.getItem("jwt");
+    if(!token) {
+        throw new Error("No token found");
+    }
+    try {
+        const response = await axios.get(`${API_URL}/api/products/category=${category}`, {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error("Failed to apply filter: ", error);
+        throw error;
+    }
+}

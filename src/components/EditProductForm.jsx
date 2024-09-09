@@ -63,7 +63,56 @@ export default function EditProductForm ({ product, isOpen, onClose , onUpdatePr
                     <input type="text" name="productNumber" value={editedProduct.productNumber} onChange={handleChange} placeholder="Product Number" className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
     
                     <label className="font-medium text-gray-700 mb-1">Category</label>
-                    <input type="text" name="category" value={editedProduct.category} onChange={handleChange} placeholder="Category" className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
+                    <div className="grid grid-cols-2 ml-1 mb-4">
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="category"
+                                value="Produce"
+                                checked={editedProduct.category === 'Produce'}
+                                onChange={handleChange}
+                                className="form-radio"
+                                required
+                            />
+                            <span className="ml-2">Produce</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="category"
+                                value="D19"
+                                checked={editedProduct.category === 'D19'}
+                                onChange={handleChange}
+                                className="form-radio"
+                                required
+                            />
+                            <span className="ml-2">D19</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="category"
+                                value="Cooler"
+                                checked={editedProduct.category === 'Cooler'}
+                                onChange={handleChange}
+                                className="form-radio"
+                                required
+                            />
+                            <span className="ml-2">Cooler</span>
+                        </label>
+                        <label className="inline-flex items-center">
+                            <input
+                                type="radio"
+                                name="category"
+                                value="Freezer"
+                                checked={editedProduct.category === 'Freezer'}
+                                onChange={handleChange}
+                                className="form-radio"
+                                required
+                            />
+                            <span className="ml-2">Freezer</span>
+                        </label>
+                    </div>
     
                     <label className="font-medium text-gray-700 mb-1">Expiration Date</label>
                     <input type="date" name="expirationDate" value={formatInputDate(editedProduct.expirationDate)} onChange={handleChange} className="p-2 mb-4 rounded-lg border border-gray-300 cursor-pointer" required/>
