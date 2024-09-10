@@ -67,7 +67,7 @@ export default function ProductList({
     }
 
     return (
-        <section className="flex flex-col w-full justify-center p-4 bg-white">
+        <section className="flex flex-col w-full h-full justify-start p-6 bg-white">
             <header className="flex justify-start text-3xl text-gray-800 w-full">Inventory List</header>
             <div className="flex justify-between items-center mt-4 gap-3">
                 <div className="flex gap-3">
@@ -127,7 +127,7 @@ export default function ProductList({
             </div>
             {filteredProducts.length > 0 ? (
                 <>
-                    <div className="grid grid-cols-6 bg-slate-300 mt-3">
+                    <div className="grid grid-cols-6 bg-slate-200 mt-3">
                         <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Name</div>
                         <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Item Number</div>
                         <div className="flex justify-center border-b border-l border-t border-gray-500 px-3 py-2">Category</div> 

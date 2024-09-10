@@ -6,15 +6,22 @@ export const UserContext = createContext();
 export function UserContextProvider({children}) {
     const [userDetails, setUserDetails] = useState(null);
     const [jwt, setJwt] = useState(null);
+    const [isAdmin, setIsAdmin] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
         const sessionJwt = sessionStorage.getItem("jwt");
         const sessionUserDetails = sessionStorage.getItem("userDetails")
+
         if (sessionJwt && sessionUserDetails) {
+            const parsedUserDetails = JSON.parse(sessionUserDetails);
             setJwt(sessionJwt);
-            setUserDetails(JSON.parse(sessionUserDetails))
+            setUserDetails(parsedUserDetails)
             setIsAuthenticated(!!sessionJwt);
+        
+            if(parsedUserDetails && parsedUserDetails.role) {
+                setIsAdmin(parsedUserDetails.role === "ADMIN");
+            }
         }
     }, []);
 
@@ -24,18 +31,20 @@ export function UserContextProvider({children}) {
         setJwt(response.token);
         setUserDetails(response);
         setIsAuthenticated(true);
+        setIsAdmin(response.role === "ADMIN");
     }
 
     const logout = () => {
         sessionStorage.removeItem("jwt");
-        sessionStorage.setItem("userDetails",  JSON.stringify(response));
+        sessionStorage.removeItem("userDetails");
         setJwt(null);
         setUserDetails(null);
         setIsAuthenticated(false);
+        setIsAdmin(false);
     }
 
     return (
-        <UserContext.Provider value={{ userDetails, jwt, isAuthenticated, login, logout }}>
+        <UserContext.Provider value={{ userDetails, jwt, isAuthenticated, isAdmin, login, logout }}>
             {children}
         </UserContext.Provider>
     )

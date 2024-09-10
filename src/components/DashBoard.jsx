@@ -2,10 +2,14 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { addProductAPI, applyCategoryFilterAPI, deleteProductAPI, getProductsAPI, updateProductAPI } from "../api/ApiServices";
 import ProductList from "./ProductList";
+import Header from "./Header";
+import SideBar from "./SideBar";
+import UserList from "./UserList";
 
 export default function DashBoard() {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
+    const [showMain, setShowMain] = useState("INVENTORY");
 
     const handleAddProduct = async (newProductData) => {
         const newProductResponse = await addProductAPI(newProductData);
@@ -52,6 +56,14 @@ export default function DashBoard() {
         setProducts(sortedProducts);
     }
 
+    const handleSelectInventory = () => {
+        setShowMain("INVENTORY");
+    }
+
+    const handleSelectUsers = () => {
+        setShowMain("USERS");
+    }
+
     const fetchProducts = async () => {
         try {
             const fetchedProducts = await getProductsAPI();
@@ -70,19 +82,30 @@ export default function DashBoard() {
     }
 
     return (
-        <div className="flex flex-col w-2/3">
-            <ProductList 
-                products={products} 
-                fetchProducts={fetchProducts}
-                onAddProduct={handleAddProduct} 
-                onDeleteProduct={handleDeleteProduct} 
-                onUpdateProduct={handleUpdateProduct}
-                onFilterProduct={handleFilteredProducts}
-                onSortExpSoon={handleSortExpSoon}
-                onSortExpLate={handleSortExpLate}
-                onSortUpdatedRecent={handleSortUpdatedRecent}
-                onSortUpdatedLatest={handleSortUpdatedLatest}
-            />
+        <div className="flex w-full h-full">
+            <div className="w-1/5">
+                <SideBar onSelectUsers={handleSelectUsers} onSelectInventory={handleSelectInventory}/>
+            </div>
+            <div className="flex flex-col w-4/5 h-full">
+                <Header/>
+                {showMain === "INVENTORY" && (
+                    <ProductList 
+                    products={products} 
+                    fetchProducts={fetchProducts}
+                    onAddProduct={handleAddProduct} 
+                    onDeleteProduct={handleDeleteProduct} 
+                    onUpdateProduct={handleUpdateProduct}
+                    onFilterProduct={handleFilteredProducts}
+                    onSortExpSoon={handleSortExpSoon}
+                    onSortExpLate={handleSortExpLate}
+                    onSortUpdatedRecent={handleSortUpdatedRecent}
+                    onSortUpdatedLatest={handleSortUpdatedLatest}
+                    />
+                )}
+                {showMain === "USERS" && (
+                    <UserList/>
+                )}
+            </div>
         </div>
     )
 }

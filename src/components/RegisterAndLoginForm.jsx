@@ -25,7 +25,6 @@ export default function RegisterAndLoginForm() {
         ev.preventDefault(); 
         try {
             const response = await login(loginInfo)
-            console.log(response.data);
             contextLogin(response.data);
         } catch (error) {
             console.log("Failed to login: ", error);
@@ -33,7 +32,7 @@ export default function RegisterAndLoginForm() {
     }
 
     return(
-       <div className="flex flex-col w-1/3 h-1/2 mt-6 px-8 py-5 shadow-lg bg-slate-100 rounded-lg">
+       <div className="flex flex-col w-1/3 h-1/2 mt-6 p-5 bg-slate-100 rounded-lg">
             {status === "login" && (
                 <LoginForm onLogin={(loginInfo, ev) => handleLogin(loginInfo, ev)}/>
             )}

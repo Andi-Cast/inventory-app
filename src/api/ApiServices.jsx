@@ -101,3 +101,21 @@ export async function applyCategoryFilterAPI(category) {
         throw error;
     }
 }
+
+export async function getUsersAPI() {
+    const token = sessionStorage.getItem("jwt");
+    if(!token) {
+        throw new Error("No token found");
+    }
+    try {
+        const response = await axios.get(`${API_URL}/api/users/getUsers`, {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })  
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch users: ", error);
+        throw error;
+    }
+}
