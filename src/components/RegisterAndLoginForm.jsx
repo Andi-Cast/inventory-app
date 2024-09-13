@@ -32,7 +32,7 @@ export default function RegisterAndLoginForm() {
     }
 
     return(
-       <div className="flex flex-col w-1/3 h-1/2 mt-6 p-5 bg-slate-100 rounded-lg">
+       <div className="flex flex-col w-1/3 bg-slate-100 rounded-lg p-5">
             {status === "login" && (
                 <LoginForm onLogin={(loginInfo, ev) => handleLogin(loginInfo, ev)}/>
             )}
