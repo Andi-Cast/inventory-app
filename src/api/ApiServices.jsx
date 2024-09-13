@@ -119,3 +119,40 @@ export async function getUsersAPI() {
         throw error;
     }
 }
+
+export async function updateUserAPI(updatedUser) {
+    const token = sessionStorage.getItem("jwt");
+    if(!token) {
+        throw new Error("No token found");
+    }
+    try {
+        const response = await axios.put(`${API_URL}/api/users/update/${updatedUser.id}`, updatedUser, {
+            headers : {
+                "Authorization" : `Bearer ${token}`,
+                "Content-Type" : "application/json"
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error("Failed to update user: ", error);
+        throw error;
+    }
+}
+
+export async function deleteUserAPI(userId) {
+    const token = sessionStorage.getItem("jwt");
+    if(!token) {
+        throw new Error("No token found");
+    }
+    try {
+        const response = await axios.delete(`${API_URL}/api/users/delete/${userId}`, {
+            headers: {
+                "Authorization" : `Bearer ${token}`
+            }
+        })  
+        return response.data;
+    } catch (error) {
+        console.error("Failed to delete user: ", error);
+        throw error;
+    }
+}

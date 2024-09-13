@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { getUsersAPI } from "../api/ApiServices";
+import { getUsersAPI, updateUserAPI } from "../api/ApiServices";
 import User from "./User";
 import { useEffect } from "react";
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
 
 export default function UserList() {
+
+    const {userDetails} = useContext(UserContext);
 
     const [users, setUsers] = useState([]);
     const [error, setError] = useState("");
@@ -17,10 +21,18 @@ export default function UserList() {
         return user.firstname.toLowerCase().startsWith(searchTerm.toLowerCase());
     })
 
+    const handleEditAccountAccess = async (accessChangeUser) => {
+        const updatedAccessFromAPI = await updateUserAPI(accessChangeUser);
+        setUsers((prevUsers) => prevUsers.map(user => 
+            user.id === updatedAccessFromAPI.id ? updatedAccessFromAPI : user
+        ))
+    }
+
     const fetchUsers = async() => {
         try {
             const fetchedUsers = await getUsersAPI();
-            setUsers(fetchedUsers);
+            const filteredUsers = fetchedUsers.filter(user => user.id !== userDetails.id); //removes current user
+            setUsers(filteredUsers);
         } catch (error) {
             setError(error);
         }
@@ -29,6 +41,13 @@ export default function UserList() {
     useEffect(() => {
         fetchUsers();
     }, [])
+
+    const handleUpdateUser = async (updatedUser) => {
+        const updatedUserFromAPI = await updateUserAPI(updatedUser);
+        setUsers((prevUsers) => prevUsers.map(user =>
+            user.id === updatedUserFromAPI.id ? updatedUserFromAPI : user
+        )); 
+    }
 
     return (
         <section className="flex flex-col w-full h-full justify-start p-6 bg-white">
@@ -51,7 +70,7 @@ export default function UserList() {
                         <div className="flex justify-center border border-gray-500 px-3 py-2">Actions</div>
                     </div>
                     {filteredUsers.map(user => (
-                        <User key={user.id} user={user}/>
+                        <User key={user.id} user={user} onEditedAccess={handleEditAccountAccess} onUpdateUser={handleUpdateUser}/>
                     ))}
                 </>
             ) : (
