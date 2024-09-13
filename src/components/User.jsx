@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import EditUserForm from "./EditUserForm";
 
-export default function User({ user, onUpdateUser }) {
+export default function User({ user, onUpdateUser, onDeleteUser }) {
 
     const [userDetails, setUserDetails] = useState({
         id: user.id,
@@ -39,7 +39,7 @@ export default function User({ user, onUpdateUser }) {
                     <nav onMouseLeave={() => setShowActions(false)} className="absolute left-0 top-full w-full bg-white shadow-lg border z-10">
                         <ul className="text-gray-700">
                             <li onClick={handleOpenEditUserForm} className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Edit Account <FontAwesomeIcon icon={faEdit}/></li>
-                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Delete <FontAwesomeIcon icon={faTrashAlt}/></li>
+                            <li onClick={() => onDeleteUser(user.id)}className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Delete <FontAwesomeIcon icon={faTrashAlt}/></li>
                         </ul>
                     </nav>
                 )}

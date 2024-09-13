@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getUsersAPI, updateUserAPI } from "../api/ApiServices";
+import { deleteUserAPI, getUsersAPI, updateUserAPI } from "../api/ApiServices";
 import User from "./User";
 import { useEffect } from "react";
 import { useContext } from "react";
@@ -49,6 +49,13 @@ export default function UserList() {
         )); 
     }
 
+    const handleDeleteUser = async (userId) => {
+        await deleteUserAPI(userId);
+        setUsers(users => 
+            users.filter(user => user.id !== userId)
+        );
+    }
+
     return (
         <section className="flex flex-col w-full h-full justify-start p-6 bg-white">
             <header className="flex justify-start text-3xl text-gray-800 w-full">Users List</header>
@@ -70,7 +77,7 @@ export default function UserList() {
                         <div className="flex justify-center border border-gray-500 px-3 py-2">Actions</div>
                     </div>
                     {filteredUsers.map(user => (
-                        <User key={user.id} user={user} onEditedAccess={handleEditAccountAccess} onUpdateUser={handleUpdateUser}/>
+                        <User key={user.id} user={user} onEditedAccess={handleEditAccountAccess} onUpdateUser={handleUpdateUser} onDeleteUser={handleDeleteUser}/>
                     ))}
                 </>
             ) : (
