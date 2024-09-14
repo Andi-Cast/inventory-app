@@ -2,7 +2,7 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
-export default function EditUserForm({ user, isOpen, onClose, onUpdateUser, setUserDetails }) {
+export default function EditAccountForm({ user, isOpen, onClose, onUpdateUser, setUserDetails }) {
     const [editedUser, setEditedUser] = useState({
         id: user.id,
         firstname: user.firstname,

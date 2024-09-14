@@ -8,7 +8,7 @@ function App() {
   axios.defaults.withCredentials = true;
 
   return (
-    <div className="flex justify-center items-center bg-slate-600 h-svh">
+    <div className="flex justify-center items-center bg-slate-400 h-svh">
       <UserContextProvider>
         <Routes/>
       </UserContextProvider>

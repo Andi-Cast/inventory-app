@@ -3,7 +3,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import EditUserForm from "./EditUserForm";
+import EditAccountForm from "./EditAccountForm";
 
 export default function User({ user, onUpdateUser, onDeleteUser }) {
 
@@ -45,7 +45,7 @@ export default function User({ user, onUpdateUser, onDeleteUser }) {
                 )}
             </div>
 
-            <EditUserForm  user={user} isOpen={isEditUserFormOpen} onClose={handleCloseEditUserForm} onUpdateUser={onUpdateUser} setUserDetails={setUserDetails}/>
+            <EditAccountForm  user={user} isOpen={isEditUserFormOpen} onClose={handleCloseEditUserForm} onUpdateUser={onUpdateUser} setUserDetails={setUserDetails}/>
         </div>
     );
 }

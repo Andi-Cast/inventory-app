@@ -5,6 +5,7 @@ import ProductList from "./ProductList";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import UserList from "./UserList";
+import EditProfilePage from "./EditProfilePage";
 
 export default function DashBoard() {
     const [products, setProducts] = useState([]);
@@ -64,6 +65,10 @@ export default function DashBoard() {
         setShowMain("USERS");
     }
 
+    const handleSelectEditProfile = () => {
+        setShowMain("EDIT_PROFILE");
+    }
+
     const fetchProducts = async () => {
         try {
             const fetchedProducts = await getProductsAPI();
@@ -84,7 +89,7 @@ export default function DashBoard() {
     return (
         <div className="flex w-full h-full">
             <div className="w-1/5">
-                <SideBar onSelectUsers={handleSelectUsers} onSelectInventory={handleSelectInventory}/>
+                <SideBar onSelectUsers={handleSelectUsers} onSelectInventory={handleSelectInventory} onSelectEditProfile={handleSelectEditProfile}/>
             </div>
             <div className="flex flex-col w-4/5 h-full">
                 <Header/>
@@ -104,6 +109,9 @@ export default function DashBoard() {
                 )}
                 {showMain === "USERS" && (
                     <UserList/>
+                )}
+                {showMain === "EDIT_PROFILE" && (
+                    <EditProfilePage/>
                 )}
             </div>
         </div>

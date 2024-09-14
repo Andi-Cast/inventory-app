@@ -44,7 +44,7 @@ export function UserContextProvider({children}) {
     }
 
     return (
-        <UserContext.Provider value={{ userDetails, jwt, isAuthenticated, isAdmin, login, logout }}>
+        <UserContext.Provider value={{ userDetails, setUserDetails, jwt, isAuthenticated, isAdmin, setIsAdmin,login, logout }}>
             {children}
         </UserContext.Provider>
     )

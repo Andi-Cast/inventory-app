@@ -9,6 +9,14 @@ const formatDate = (dateString) => {
     return format(date, "MM/dd/yy");
 }
 
+const getDaysUntilExpiration = (expirationDate) => {
+    const today = new Date();
+    const expDate = new Date(expirationDate);
+    const diffTime = expDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+};
+
 export default function Product({ product, onDeleteProduct, onUpdateProduct }) {
     const [showActions, setShowActions] = useState(false);
     const [isEditProductFormOpen, setIsEditProductFormOpen] = useState(false);
@@ -33,12 +41,23 @@ export default function Product({ product, onDeleteProduct, onUpdateProduct }) {
         setIsEditProductFormOpen(false);
     }
 
+    const daysUntilExpitation = getDaysUntilExpiration(product.expirationDate);
+    let textColorClass = "";
+
+    if (daysUntilExpitation <= 3) {
+        textColorClass = "text-red-500 font-bold";
+    } else if (daysUntilExpitation <= 7) {
+        textColorClass = "text-yellow-500";
+    } else {
+        textColorClass = "text-black";
+    }
+
     return (
         <div className="grid grid-cols-6 bg-white">
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.name}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.productNumber}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{product.category}</div>
-            <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{formatDate(product.expirationDate)}</div>
+            <div className={`flex justify-center border-b border-l border-gray-500 px-3 py-2 ${textColorClass}`}>{formatDate(product.expirationDate)}</div>
             <div className="flex justify-center border-b border-l border-gray-500 px-3 py-2">{formatDate(product.lastUpdated)}</div>
             <div className="group relative flex justify-center items-center border-b border-l border-r border-gray-500 px-3 py-2">
                 <FontAwesomeIcon  onClick={toggleActions} className="text-slate-500 hover:text-slate-700 text-2xl cursor-pointer" icon={faEllipsis}/>
